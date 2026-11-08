@@ -14,6 +14,17 @@ nothing to set up on first launch.
 > Want the AI assistant too (skills, fitting, wormholes, PvE… answered with cited sources)?
 > Get **Capsuleers.IA**, which bundles both the AI and these Intel features.
 
+## Screenshots
+
+<p align="center"><img src="docs/screenshots/local.png" alt="Local intel roster with detected alliances"></p>
+
+All pilots, corporations and alliances shown are invented demo data.
+
+| | |
+|---|---|
+| <img src="docs/screenshots/dossier.png" alt="Pilot dossier"><br>**Pilot dossier** — playstyle, wingmates and recent ships | <img src="docs/screenshots/dscan.png" alt="D-Scan analysis"><br>**D-Scan** — fleet composition by ship class, offline |
+| <img src="docs/screenshots/history.png" alt="Shared links"><br>**Shared links** — 24h links with a live countdown | |
+
 ## Features
 
 - **Local intel** — copy EVE's Local window (`Ctrl+A`, `Ctrl+C`) and get a per-pilot roster:

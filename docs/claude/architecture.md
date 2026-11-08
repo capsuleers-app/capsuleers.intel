@@ -87,3 +87,5 @@ via `fs`, which fails inside `app.asar`.
 - **Capsuleers.Site** (`capsuleers.app`) — hosts the share endpoints
   (`/api/pilot-intel/shares/from-scan`, `/api/scans/from-dscan`, anonymous / no-Origin) that
   the Share buttons POST to. No Site changes are required for this app.
+
+- Demo (solo screenshot README): `cd desktop && npm run demo` (porta 5198) serve il renderer reale con il mock in memoria di `window.capsuleers` (`desktop/demo/`, dati inventati, escluso dal pacchetto via `!demo/**`). Shot con Playwright esterno al repo, images.evetech.net sostituito da SVG segnaposto, locale en-GB, viewport 1240x820 @2x, in `docs/screenshots/` (`__demo.local()` / `__demo.dscan()`, clic sulla prima riga per il dossier, `#history-btn`).
