@@ -411,6 +411,11 @@ export async function analyzeDScan(rows) {
   return { total: rows.length, system, shipUnits, shipClasses, ships, other };
 }
 
+// Coerce external (eve-kill / ESI) values to finite numbers at the source: the renderer
+// interpolates them into innerHTML, so a string payload must never get through.
+const n0 = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
+const numOrNull = (v) => { if (v == null) return null; const n = Number(v); return Number.isFinite(n) ? n : null; };
+
 /**
  * Full intel detail of a character (for the popup on row click).
  * Accepts the already-known ID (preferred) or the name. Returns an object ready
@@ -425,27 +430,27 @@ export async function characterDetail({ id, name } = {}) {
   const { corp = null, alliance = null } = aff.status === "fulfilled" ? aff.value : {};
   const ps = intel?.playstyle || {};
   return {
-    id,
+    id: n0(id),
     name: name || `#${id}`,
-    corpName: corp?.name || "", corpId: corp?.id ?? null, corpTicker: corp?.ticker || "",
-    allianceName: alliance?.name || "", allianceId: alliance?.id ?? null, allianceTicker: alliance?.ticker || "",
-    kills: stats?.kills ?? null,
-    losses: stats?.losses ?? null,
-    eff: stats?.isk_efficiency ?? null,
+    corpName: corp?.name || "", corpId: numOrNull(corp?.id), corpTicker: corp?.ticker || "",
+    allianceName: alliance?.name || "", allianceId: numOrNull(alliance?.id), allianceTicker: alliance?.ticker || "",
+    kills: numOrNull(stats?.kills),
+    losses: numOrNull(stats?.losses),
+    eff: numOrNull(stats?.isk_efficiency),
     danger: dangerScore(stats, intel),
     dominant: intel?.dominant_style || "",
     // Percentages for the solo / small+mid / fleet+blob bar.
     play: {
-      solo: ps.solo ?? 0,
-      small: (ps.small_gang ?? 0) + (ps.mid_gang ?? 0),
-      fleet: (ps.fleet ?? 0) + (ps.blob ?? 0),
-      avgFleet: ps.avg_fleet_size ?? null,
+      solo: n0(ps.solo),
+      small: n0(ps.small_gang) + n0(ps.mid_gang),
+      fleet: n0(ps.fleet) + n0(ps.blob),
+      avgFleet: numOrNull(ps.avg_fleet_size),
     },
     capital_pilot: !!intel?.capital_pilot,
     is_logi: !!intel?.is_logi,
     fc: intel?.fc?.likelihood && intel.fc.likelihood !== "None" ? intel.fc.likelihood : "",
     bait: intel?.bait && intel.bait !== "None" ? intel.bait : "",
-    partners: (intel?.fleet_partners || []).slice(0, 10).map((p) => ({ id: p.id, name: p.name, count: p.count })),
-    ships: (intel?.ships_flown || []).slice(0, 6).map((s) => ({ id: s.id, name: s.name, count: s.count })),
+    partners: (intel?.fleet_partners || []).slice(0, 10).map((p) => ({ id: n0(p.id), name: String(p.name ?? ""), count: n0(p.count) })),
+    ships: (intel?.ships_flown || []).slice(0, 6).map((s) => ({ id: n0(s.id), name: String(s.name ?? ""), count: n0(s.count) })),
   };
 }

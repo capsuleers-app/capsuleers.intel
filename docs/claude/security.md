@@ -20,3 +20,7 @@ Hardened 2026-06-29 — full write-up in [`docs/security-review-2026-06-29.md`](
   0.1.18 there was NO notice at all (the watch started on first launch) while these docs claimed one;
   an upgraded install sees it once. Bump `CONSENT_VERSION` whenever the set of contacted services
   changes. The per-scan confirmation also names where the pilot names go.
+
+**CSP without `unsafe-inline` for scripts.** The renderer JS lives in `renderer/renderer.js` (no inline
+scripts or `on*=` handlers). External values reaching `innerHTML` go through `esc()` / `nid()`;
+`characterDetail()` in `intel.mjs` coerces eve-kill/ESI numbers to finite values at the source.
